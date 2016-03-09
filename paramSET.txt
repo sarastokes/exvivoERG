@@ -1,0 +1,104 @@
+//#assign existing variables to new CSV format
+NC = wks.ncols;
+for (i=4;i<=NC;i+=3){
+  kommentar$ = col($(i-1))[C]$;
+  cykler$ = col($(i-1))[1]$; col($(i))[D7]$ = cykler$;
+  gennemsnit$ = col($(i-1))[4]$; col($(i))[D6]$ = gennemsnit$;
+  farve$ = col($(i-2))[10]$ + " " + col($(i-1))[10]$ + " " + col($(i))[10]$;
+  col($(i))[D1]$ = farve$;
+  numpk = col($(i-1))[8];
+  RN = numpk - 1;
+  bredde$ = col($(i-2))[$(14+RN)]$ + " " + col($(i-1))[$(14+RN)]$ + " " + col($(i))[$(14+RN)]$;
+  col($(i))[D2]$ = bredde$;
+//#multiple Spectrum1 peaks
+    if (col($(i-1))[8] != 1){
+      numpk = col($(i-1))[8];
+      numpk = numpk-1;
+      aa$ = farve$;
+      for (j=1;j<=numpk;j++){
+        bb$ = col($(i-2))[$(10+j)]$ + " " + col($(i-1))[$(10+j)]$ + " " + col($(i))[$(10+j)]$;
+        aa$ = aa$ + " + " + bb$;
+        farve$ = aa$; col($(i))[D1]$ = aa$;
+      };
+    };
+    if (col($(i-1))[8] == 5){
+      aa$ = "White";
+      bb$ = col($(i))[10]$;
+      farve$ = aa$ + " + " + bb$;
+      };
+    if (col($(i-1))[7]$ == "Dark Spec"){
+      dkspec$ = farve$;
+      col($(i))[D18]$ = dkspec$;
+      wcellcolor $(i)[D1] c:=color(gray);
+    };
+//#multiple Spectrum2 peaks
+    if (col($(i-1))[$(12+RN)] != 1){
+      numpkb = col($(i-1))[$(12+RN)];
+      numpkb = numpkb - 1;
+      aa$ = bredde$;
+      for (j=1;j<=numpkb;j++){
+        bb$ = col($(i-2))[$(14+RN+j)]$ + " " + col($(i-1))[$(14+RN+j)]$ + " " + col($(i))[$(14+RN+j)]$;
+        aa$ = aa$ + " + " + bb$;
+        bredde$ = aa$; col($(i))[D2]$ = aa$;
+      };
+    };
+    if (col($(i-1))[$(12+RN)] == 5){
+      aa$ = "White";
+      bb$ = col($(i))[$(14+RN)]$;
+      bredde$ = aa$ + " " + bb$; col($(i))[D2]$ = bredde$;
+    };
+    if (col($(i-1))[$(11+RN)]$ == "Dark Spec"){ //#move to end
+      dkspec$ = bredde$;
+      col($(i))[D18]$ = dkspec$;
+      wcellcolor $(i)[D2] c:=color(gray);
+      };
+  };
+
+  for (i=4;i<=NC;i+=3){
+    kommentar$ = col($(i))[C]$;
+    if (Match(kommentar$, "?*Ames*?") == 1){col($(i))[D4]$ = "Ames";};
+    if (Match(kommentar$, "?*Aspartate*?") == 1){col($(i))[D4]$ = "L-Aspartate";
+      if (Match(kommentar$, "?*wash*?") == 1){col($(i))[D4]$ = "L-AspWash ";};
+    };
+    if (Match(kommentar$, "?*GABA*?") == 1){col($(i))[D4]$ = "GABA";
+      if (Match(kommentar$, "?*wash*?") == 1){col($(i))[D4]$ = "GABAwash";};
+    };
+    if (Match(kommentar$, "?*AP4*?") == 1 || match(kommentar$, "?*APB*?") == 1){
+      medicin$ = "LAP4"; col($(i))[D4]$ = medicin$;
+      if (Match(kommentar$, "?*wash*?") == 1){col($(i))[D4]$ = "LAP4wash";};
+    };
+    if (Match(kommentar$, "?*AP4*?") == 1 || match(kommentar$, "?*APB*?") == 1){
+      if (Match(kommentar$, "?*GABA*?") == 1){
+        col($(i))[D4]$ = "ALL";
+        if (Match(kommentar$, "?*wash*?") == 1){
+          col($(i))[D4]$ = "ALLwash";
+        };
+      };
+    };
+//#    if (col($(i))[D4]$ == ""){col($(i))[D4]$ = "ames";};
+    if (match(kommentar$, "?*iso*?") == 1){col($(i))[D8]$ = "SIso";};
+    if (match(kommentar$, "?*flick*?") == 1 || (match(kommentar$, "?*phot*?")) == 1){
+      optagelse$ = "Fphot"; col($(i))[D8]$ = optagelse$;
+    };
+    if (col($(i))[D7] >= 5){col($(i))[D8]$ = "FPhot";};
+    if (col($(i))[D18]$ != ""){col($(i))[D8]$ = "OnOff";};
+    if (match(kommentar$, "?*IRF*?") == 1){col($(i))[D3]$ = "IRF";};
+  };
+
+for (i=4;i<=NC;i+3){
+  kommentar$ = col($(i))[C]$;
+  if (Match(kommentar$ = "*?test?*") == 1){col($(i))[D10]$ = "Test";};
+  if (Match(kommentar$ = "?*10e6*?") == 1){col($(i))[D5]$ = "10e6";};
+  if (Match(kommentar$ = "?*10e3*?") == 1){col($(i))[D5]$ = "10e3";};
+  if (Match(kommentar$ = "?*10e08*?" == 1 || Match(kommentar$ = "?*10e0.8*?") == 1){
+    col($(i))[D5]$ = "10e08";
+  };
+  if (Match(kommentar$ = "?*10e09*?") == 1 || match(kommentar$ = "?*10e0.9*?") == 1){
+    col($(i))[D5]$ = "10e0.9";
+  };
+  if (Match(kommentar$ = "?*10e18*?") == 1 || match(kommentar$ = "?*10e1.8*?") == 1){
+    col($(i))[D5]$ = "10e0.9";
+  };
+  if (Match(kommentar$ = "?*10e0*?") == 1){col($(i))[D5]$ = "10e0";};
+  if (col($(i))[D5]$ == ""){col($(i))[D5]$ == "10e0";};
+};

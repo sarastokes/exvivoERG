@@ -1,0 +1,20 @@
+//Create new user parameters, might use template later
+wks.userparam1$ = "Wavelength";
+wks.userparam2$ = "Bandwidth";
+wks.userparam3$ = "Intensity";
+wks.userparam4$ = "Treatment";
+wks.userparam5$ = "ND Filter";
+wks.userparam6$ = "Averages";
+wks.userparam7$ = "Cycles";
+wks.userparam8$ = "ERG type";
+wks.userparam9$ = "Genotype";
+wks.userparam10$ = "Trial";
+wks.userparam11$ = "Eye";
+wks.userparam12$ = "Date";
+wks.userparam13$ = "Time";
+wks.userparam14$ = "Awave";
+wks.userparam15$ = "Bwave";
+wks.userparam16$ = "D1-wave";
+wks.userparam17$ = "D2-wave";
+wks.userparam18$ = "Dark Spectra";
+wks.userparam19$ = "File path";

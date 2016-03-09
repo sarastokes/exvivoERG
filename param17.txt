@@ -1,0 +1,42 @@
+//Set and show sorting user parameter rows
+
+getn (Wavelength) UPa:2
+     (Bandwidth) UPb:2
+     (Intensity) UPc:2
+     (Treatment) UPd:2
+     (NDFilter) UPe:2
+     (Averages) UPf:2
+     (Cycles) UPg:2
+     (ERG Type) UPh:2
+     (Genotype) UPi:2
+     (Trial #) UPj:2
+     (Eye #) UPk:2
+     (Date) UPl:2
+     (Time) UPm:2
+     (A-wave) UPn:2
+     (B-wave) UPo:2
+     (D1-wave) UPp:2
+     (D2-wave) UPq:2
+     (Dark Spectra) UPr:2
+     (File Name) UPs:2
+     (Parameters to show);
+
+wks.UserParam1 = $(UPa);
+wks.UserParam2 = $(UPb);
+wks.UserParam3 = $(UPc);
+wks.UserParam4 = $(UPd);
+wks.UserParam5 = $(UPe);
+wks.UserParam6 = $(UPf);
+wks.UserParam7 = $(UPg);
+wks.UserParam8 = $(UPh);
+wks.UserParam9 = $(UPi);
+wks.UserParam10 = $(UPj);
+wks.UserParam11 = $(UPk);
+wks.UserParam12 = $(UPl);
+wks.UserParam13 = $(UPm);
+wks.UserParam14 = $(UPn);
+wks.UserParam15 = $(UPo);
+wks.UserParam16 = $(UPp);
+wks.UserParam17 = $(UPq);
+wks.UserParam18 = $(UPr);
+wks.UserParam19 = $(UPs);

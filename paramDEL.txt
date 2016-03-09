@@ -1,0 +1,18 @@
+//#FINAL formatting
+NC = wks.ncols;
+for (i=4;i<=NC;i++){
+  del col($(i-2));
+  del col($(i-2));
+  range r1 = $(i-2)[1:282];
+  del r1;
+  };
+};
+NC = wks.ncols;
+for (i=2;i<=NC;i++){
+  if(col($(i-2))[D18]$ == col($(i-2))[D1]$){
+    wcellcolor $(i-2)[D1] c:=color(gray);
+  };
+  if(col($(i-2))[D18]$ == col($(i-2))[D2]$){
+    wcellcolor $(i-2)[D2] c:=color(gray);
+  };
+};
