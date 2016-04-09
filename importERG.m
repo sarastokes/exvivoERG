@@ -27,8 +27,8 @@ for a = 3:length(navne)
 		r = sprintf('trace%u',t);
 
 		S.(r).fname = navn;
-		S.(r).path = filmappe;
-		S.(r).time = navne(a).date;
+		S.(r).fpath = filmappe;
+		S.(r).day = navne(a).date;
 		S.(r).addInfo = char(txt(8,2));
 
 		S.(r).amplifier.gain = num(11,2);
