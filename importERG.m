@@ -120,6 +120,17 @@ for a = 3:length(navne)
 			S.(r).drug = 'Ames';
 		end
 
+		% Neutral density filter
+		if ~isempty(strfind(navn,'10^0')) || ~isempty(strfind(navn,'no NDF'))
+			S.(r).NDF = 'none';
+		elseif ~isempty(strfind(navn,'10^3')) || ~isempty(strfind(navn,'10e3'))
+			S.(r).NDF = '10e3';
+		elseif ~isempty(strfind(navn,'10^6')) || ~isempty(strfind(navn,'10e6'))
+			S.(r).NDF = '10e6';
+		else
+			S.(r).NDF = [];
+		end
+		
 		% not sure how to pull this yet
 		S.(r).temp = 35.7;
 
