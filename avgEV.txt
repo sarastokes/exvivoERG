@@ -1,0 +1,162 @@
+//Variables: GP, GPs, GPe, GPc, GPd, GPn , GPo, GPss, GPcc, GRP
+//Variables: SP, RI, PK, PO
+//Variables: createparam, setparam, showparam, newcsv, findint,
+//Variables: PLT, ePLT,
+string GPop$ = "offset single comparison nevermind";
+string GPcols$ = "range of columns to graph", GPcol$ = "column to graph";
+string GPsh$ = "destination sheet", GPbk$ = "destination graph";
+string toppe$ = "Awave Bwave D1wave D2wave";
+String cykler$ ="hz", farve$ = "wavelength", retssag$ = "trial", oje$ = "eye",
+   gennemsnit$ = "avg", lysstyrke$ = "brightness", bredde$ = "bandwidth",
+   dato$ = "date", tid$ = "time", kommentar$ = "comments", medicin$ = "drug",
+   arter$ = "genotype", optagelse$ = "exp type", taethed$ = "NDF",
+   dkspec$ = "dark spectrum", numpk$ = "peaks", fpath$ = "file path";
+string aa$, bb$, avglist$, output$;
+string species$ = "monkey mouse";
+string PKopt$ = "DarkSpectrum 2peak 3peak other";
+
+//program should be run while the source book & sheet is active
+%M = %H;       //sets %M to active source book
+%L = page.active$;     //sets %L to active source sheet
+AVG = 1;  //#set bc in avgEV.txt file
+
+//choose which parameters to sort by
+getn (Wavelength) farvee:2
+     (Bandwidth) breddee:2
+     (Intensity) lysstyrkee:2
+     (Treatment) medicinn:2
+     (ND Filter) taethedd:2
+     (Average) gennemsnitt:2
+     (Hertz) cyklerr:2
+     (ERG type) optagelsee:2
+     (Genotype) arterr:2
+     (Trial) retssagg:2
+     (Eye) ojee:2
+     (Date) datoo:2
+     (Dark Spectrum) dkspecc:2
+     (Supply col selected?) supcol:2
+     (Column) GPs
+     (Sorting Parameters);
+
+//#set at supply column
+if (supcol == 1){
+    i = GPs;            //#so i dont have to retype all that
+    farve$ = col($(i))[D1]$;
+    bredde$ = col($(i))[D2]$;
+    lysstyrke$ = col($(i))[D3]$;
+    medicin$ = col($(i))[D4]$;
+    taethed$ = col($(i))[D5]$;
+    gennemsnit$ = col($(i))[D6]$;
+    cykler$ = col($(i))[D7]$;
+    optagelse$ = col($(i))[D8]$;
+    arter$ = col($(i))[D9]$;
+    retssag$ = col($(i))[D10]$;
+    oje$ = col($(i))[D11]$;
+    dato$ = col($(i))[D12]$;
+    dkspec$ = col($(i))[D18]$;
+};
+
+if (AVG == 1 && supcol == 0){
+   if (farvee == 1){getn (Wavelength) farve$;};
+   if (breddee == 1){getn (Bandwidth) bredde$;};
+   if (lysstyrkee == 1){getn (Intensity) lysstyrke$;};
+   if (medicinn == 1){getn (Treatment) MD:medicin$;};
+   if (taethedd == 1){getn (ND Filter) NDF:taethed$;};
+   if (gennemsnitt == 1){getn (Average) gennemsnit$;};
+   if (cyklerr == 1){getn (Hertz) cykler$;};
+   if (optagelsee == 1){getn (ERG type) ET:optagelse$;};
+   if (arterr == 1){getn (Genotype) GT:arter$;};
+   if (retssagg == 1){getn (Trial) retssag$;};
+   if (ojee ==1 ){getn (Eye) oje$;};
+   if (datoo == 1){getn (Date) dato$;};
+   if (dkspecc == 1){getn (Dark Spectrum) dkspec$;};
+};
+
+//#search for matching columns
+if (AVG == 1){
+  string output$ = "";
+  avglist$ = "[%M]%L!(";
+  for (i=2;i<=NC;i++){
+    if(farvee==1){
+      if (farve$ != col($(i))[D1]$){continue;};
+    };
+    if (breddee==1){
+      if (bredde$ != col($(i))[D2]$){continue;};
+    };
+    if (lysstyrkee == 1){
+      if (lysstyrke != col($(i))[D3]$){continue;};
+    };
+    if (medicinn == 1){
+      if (medicin$ != col($(i))[D4]$){continue;};
+    };
+    if (taethedd == 1){
+      if (taethed$ != col($(i))[D5]$){continue;};
+    };
+    if (gennemsnitt == 1){
+      if (gennemsnit$ != col($(i))[D6]$){continue;};
+    };
+    if (cyklerr == 1){
+      if (cykler$ != col($(i))[D7]$){continue;};
+    };
+    if (optagelsee == 1){
+      if (optagelse$ != col($(i))[D8]$){continue;};
+    };
+    if (arterr == 1){
+      if (arter$ != col($(i))[D9]$){continue;};
+    };
+    if (retsagg == 1){
+      if (retssag$ != col($(i))[D9]$){continue;};
+    };
+    if (ojee == 1){
+      if (oje$ != col($(i))[D10]$){continue;};
+    };
+    if (datoo == 1){
+      if (oje$ != col($(i))[D11]$){continue;};
+    };
+    if (dkspecc == 1){
+      if (dkspec$ = col($(i))[D18]$){continue;};
+    };
+    kommentar$ = col($(i))[C]$;
+    if (match(kommentar$ = "?*test*?") != 1){continue;};
+    type col($(i));
+    avglist$ = avglist$ + "col($(i))" + ",";
+//#    output$ = output$ + " ["+ "%H" + "]" + "%L" + "!" + "col($(i))";
+//#    plotxy iy:=[%M]%L!(1,$(i)) plot:=200 ogl:=[DeskBk$]DestSh$!;
+  };
+};
+
+int nn = len(avglist$);
+string list$ = replace(avglist$, $(nn), 1, ")")$;
+avglist$ = list$;
+type avglist$;
+rowstats irng:=avglist$ mean:=[%M]Avgs!<new> sem:=[%M]Avgs!<new> n:=[%M]Avgs!<new> -r 1;
+page.active$ = Avgs;
+NCavg = wks.ncols; worksheet -t NCavg 2;
+NCavg = NCavg - 1; worksheet -t NCavg 3;
+NCavg = NCavg - 1; worksheet -t NCavg 2;
+NCavg = NCavg - 1; //#now selects the mean column
+if (farvee == 1){col($(NCavg))[D1]$ = farve$;};
+if (breddee == 1){col($(NCavg))[D2]$ = bredde$;};
+if (lysstyrkee == 1){col($(NCavg))[D3]$ = lysstyrke$;};
+if (medicinn == 1){col($(NCavg))[D4]$ = medicin$;};
+if (taethedd == 1){col($(NCavg))[D5]$ = taethed$;};
+if (gennemsnitt == 1){col($(NCavg))[D6]$ = gennemsnit$;};
+if (cyklerr == 1){col($(NCavg))[D7]$ = cykler$;};
+if (optagelsee == 1){col($(NCavg))[D8]$ = optagelse$;};
+if (arterr == 1){col($(NCavg))[D9]$ = arter$;};
+if (retssagg == 1){col($(NCavg))[D10]$ = retssag$;};
+if (ojee ==1 ){col($(NCavg))[D11]$ = oje$;};
+if (datoo == 1){col($(NCavg))[D12]$ = dato$;};
+if (dkspecc == 1){col($(NCavg))[D18]$ = dkspec$;};
+
+getn (plot average?) PLT:2;
+     (add to existing graph?) ePLT:2s
+     (dest graph) GPbk$
+     (dest sheet) GPsh$;
+
+if (PLT == 1){
+  plotxy iy:=[%H]Avgs!(1,$(NCavg)) plot:=200;
+  if (ePLT == 1){
+    plotxy iy:=[%H]Avgs!(1,$(NCavg)) plot:=200 ogl:=[GPbk$]GPsh$!;
+  };
+};
