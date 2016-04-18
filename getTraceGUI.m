@@ -1,4 +1,12 @@
 function [] = getTraceGUI(S)
+  % Input: data structure 'S' from importERG.m
+  % Use text boxes to input whatever parameters you want to sort the traces by
+  % Push buttons next to each text box will update trace list.
+  % Don't use the 'update' button - eventually I'll sort all this out
+  % The 'graph' button will graph the selected trace
+  % The 'reset' button returns the original list of traces
+  % TODO: new graph window that allows multiple traces, update button,
+  %       title for graph, show filename(?), add attribute display to trace list
 %% Setup
 set(0,'DefaultTextFontSize',10);
 set(0,'DefaultTextFontName','Roboto');
@@ -13,6 +21,7 @@ f1.fh = figure('units','pixels',...
               'menubar','none',...
               'numbertitle','off',...
               'name','ExVivoERG',...
+              'color', [0 0.90588 0.88627],...
               'resize','off');
 setappdata(f1.fh,'GUIdata',S);
 f1.fh.UserData = S;
@@ -319,13 +328,13 @@ function [] = spectra1_call(varargin)
     traceSpectra = [S.(r).spectra1.wl S.(r).spectra1.bw S.(r).spectra1.int];
     traceWL = traceSpectra(1); traceBW = traceSpectra(2); traceIN = traceSpectra(3);
     % if wavelength is specified and doesn't equal trace(r), exit the for loop
-    if strcmpi(matchWL,'nm') == 0 && str2num(matchWL) ~= traceWL
+    if strcmpi(matchWL,'nm') == 0 && str2double(matchWL) ~= traceWL
       continue;
     end
-    if strcmpi(matchBW,'nm') == 0 && str2num(matchBW) ~= traceBW
+    if strcmpi(matchBW,'nm') == 0 && str2double(matchBW) ~= traceBW
       continue;
     end
-    if strcmpi(matchIN,'%') == 0 && str2num(matchIN) ~= traceIN
+    if strcmpi(matchIN,'%') == 0 && str2double(matchIN) ~= traceIN
       continue;
     end
     % if trace gets to this point it matches wl,bw and int (if specified)
@@ -363,13 +372,13 @@ function [] = spectra2_call(varargin)
     traceSpectra = [S.(r).spectra2.wl S.(r).spectra2.bw S.(r).spectra2.int];
     traceWL = traceSpectra(1); traceBW = traceSpectra(2); traceIN = traceSpectra(3);
     % if wavelength is specified and doesn't equal trace(r), exit the for loop
-    if strcmpi(matchWL,'nm') == 0 && str2num(matchWL) ~= traceWL
+    if strcmpi(matchWL,'nm') == 0 && str2double(matchWL) ~= traceWL
       continue;
     end
-    if strcmpi(matchBW,'nm') == 0 && str2num(matchBW) ~= traceBW
+    if strcmpi(matchBW,'nm') == 0 && str2double(matchBW) ~= traceBW
       continue;
     end
-    if strcmpi(matchIN,'%') == 0 && str2num(matchIN) ~= traceIN
+    if strcmpi(matchIN,'%') == 0 && str2double(matchIN) ~= traceIN
       continue;
     end
     % if trace gets to this point it matches wl,bw and int (if specified)
